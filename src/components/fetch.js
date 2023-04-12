@@ -1,47 +1,37 @@
-const postURL = 'https://jsonplaceholder.typicode.com/posts'
-const imageURL = 'https://api.thecatapi.com/v1/images/search'
+const imageURL = 'https://api.thecatapi.com/v1/images/search';
+const postURL = 'https://jsonplaceholder.typicode.com/posts';
 
-const fetchPostURL = fetch(postURL)
-	.then((response) => {
-		return response.json()
-	})
-	.then((data) => {
-		putData(data)
-		putImg()
-	}).catch((err) => {
-		console.error(err)
-	})
+const image = fetch(imageURL).then(response => response.json());
+const post = fetch(postURL).then(response => response.json());
 
+export default Promise.all([image, post])
+	.then(([image, post]) => {
+		let li = '';
+		let btnCounter = 0;
+		document.querySelector('#show').addEventListener('click', () => {
+			btnCounter += 10
+			document.querySelector('#show').textContent = `show more`
+			for (let i = btnCounter - 10; i < btnCounter; i++) {
+				if (post.length <= i) {
+					alert(`Sorry but we only had ${post.length} users`)
+					return
+				}
 
-
-function putData(data) {
-	let li = '';
-	let btnCounter = 0;
-
-
-	document.querySelector('#show').addEventListener('click', () => {
-		btnCounter += 10
-		document.querySelector('#show').textContent = `show more`
-		for (let i = btnCounter - 10; i < btnCounter; i++) {
-			if (data.length <= i) {
-				alert(`Sorry but we only had ${data.length} users`)
-				return
-			}
-
-			li = `
+				li = `
 					<li class="show__item">
-					<div>
-					<span class="show__item-title">${
-						data[i].title.charAt(0).toUpperCase() + data[i].title.slice(1) + ' ID: ' + data[i].id
-					}</span>
-					</div>
-					<span class="show__item-body">${data[i].body}</span>
+						<div>
+							<img class="show__img" src="${image[0].url}"/>
+								<span class="show__item-title">${
+								post[i].title.charAt(0).toUpperCase() + post[i].title.slice(1) + ' ID: ' + post[i].id
+								}</span>
+						</div>
+						<span class="show__item-body">${post[i].body}</span>
 					</li>
 					`
 
-			document.querySelector('.show__items').insertAdjacentHTML('beforebegin', li)
-		}
-	})
-}
+				document.querySelector('.show__items').insertAdjacentHTML('beforebegin', li)
+			}
+		})
 
-export default fetchPostURL
+	})
+	.catch(error => console.error(error));
