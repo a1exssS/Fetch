@@ -100,28 +100,33 @@ a:active {
 			text-decoration: none;
 		}
 
-		a::before {
-			content: '';
-			position: absolute;
-			width: 100%;
-			height: 2px;
-			border-radius: 4px;
-			background-color: #000;
-			bottom: -3px;
-			left: 0;
-			transform-origin: right;
-			transform: scaleX(0);
-			transition: transform .3s ease-in-out;
-		}
+		@media(min-width:540px) {
 
-		a:hover::before {
-			transform-origin: left;
-			transform: scaleX(1);
+			a::before {
+				content: '';
+				position: absolute;
+				width: 100%;
+				height: 2px;
+				border-radius: 4px;
+				background-color: #000;
+				bottom: -3px;
+				left: 0;
+				transform-origin: right;
+				transform: scaleX(0);
+				transition: transform .3s ease-in-out;
+			}
+
+			a:hover::before {
+				transform-origin: left;
+				transform: scaleX(1);
+			}
+
 		}
 
 		&:not(:last-child) {
 			margin-right: 10px;
 		}
+
 	}
 
 	&__item-link {}
@@ -169,10 +174,14 @@ a:active {
 			color: #fff;
 			transition: color .3s ease-in-out, box-shadow .3s ease-in-out;
 
-			&:hover {
-				color: #000;
-				box-shadow: inset 0 0 0 0 #000;
+			@media(min-width:540px) {
+
+				&:hover {
+					color: #000;
+					box-shadow: inset 0 0 0 0 #000;
+				}
 			}
+
 
 		}
 
